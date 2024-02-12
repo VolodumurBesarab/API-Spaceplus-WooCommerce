@@ -18,27 +18,28 @@ class AuthClient:
         return cls._instance
 
     def __init__(self):
-        if not self.__initialized:
-            secrets_file_path = r'D:\API-Spaceplus-WooCommerce\secrets.json'
-            if os.path.exists(secrets_file_path):
-                with open(secrets_file_path) as secrets:
-                    self.secrets = json.load(secrets)
-
-                self.application_id = self.secrets.get("VLAD_APPLICATION_ID")
-                self.client_secret = self.secrets.get("VLAD_CLIENT_SECRET")
-                self.authority_url = self.secrets.get("authority_url")
-
-            else:
-                self.application_id = os.environ["VLAD_APPLICATION_ID"]
-                self.client_secret = os.environ["VLAD_CLIENT_SECRET"]
-                self.authority_url = os.environ["authority_url"]
-
-            self.default_scope = ['https://graph.microsoft.com/.default']
-            self.base_url = "https://graph.microsoft.com/v1.0/"
-            self.endpoint = self.base_url + "users/andrzej.besarab@spacelpus.onmicrosoft.com/"
-
-            self.client = None
-            self.access_token = None
+        pass
+        # if not self.__initialized:
+        #     secrets_file_path = r'D:\API-Spaceplus-WooCommerce\secrets.json'
+        #     if os.path.exists(secrets_file_path):
+        #         with open(secrets_file_path) as secrets:
+        #             self.secrets = json.load(secrets)
+        #
+        #         self.application_id = self.secrets.get("VLAD_APPLICATION_ID")
+        #         self.client_secret = self.secrets.get("VLAD_CLIENT_SECRET")
+        #         self.authority_url = self.secrets.get("authority_url")
+        #
+        #     else:
+        #         self.application_id = os.environ["VLAD_APPLICATION_ID"]
+        #         self.client_secret = os.environ["VLAD_CLIENT_SECRET"]
+        #         self.authority_url = os.environ["authority_url"]
+        #
+        #     self.default_scope = ['https://graph.microsoft.com/.default']
+        #     self.base_url = "https://graph.microsoft.com/v1.0/"
+        #     self.endpoint = self.base_url + "users/andrzej.besarab@spacelpus.onmicrosoft.com/"
+        #
+        #     self.client = None
+        #     self.access_token = None
 
     def get_access_token_default_scopes(self) -> str:
         if not self.access_token:
