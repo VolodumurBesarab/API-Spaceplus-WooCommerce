@@ -30,14 +30,14 @@ PARTS_CATEGORY_DICT = {"Bagażniki dachowe > Bez relingów": [{"id": 51}, {"id":
 class CreateAdvert:
     def __init__(self):
         try:
-            self.CONSUMER_KEY_WC = os.getenv("CONSUMER_KEY_WC_2")
-            self.CONSUMER_SECRET_WC = os.getenv("CONSUMER_SECRET_WC_2")
-            self.WC_URL = os.getenv("WC_URL")
+            self.CONSUMER_KEY_WC = os.environ["CONSUMER_KEY_WC"]
+            self.CONSUMER_SECRET_WC = os.environ["CONSUMER_SECRET_WC"]
+            self.WC_URL = os.environ["WC_URL"]
         except:
             self.CONSUMER_KEY_WC = os.getenv("CONSUMER_KEY_WC_2")
             self.CONSUMER_SECRET_WC = os.getenv("CONSUMER_SECRET_WC_2")
             self.WC_URL = os.getenv("WC_URL")
-            print("add env to lambda")
+
 
     def create_woocommerce_advert(self, title, price, product_id, description, parts_category, images, shipping, new_used, manufacturer):
         # product_id = payload_data["product_id"]

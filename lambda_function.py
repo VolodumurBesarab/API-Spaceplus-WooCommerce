@@ -29,7 +29,7 @@ def lambda_handler(event, context):
         price = payload_data["price"]
         new_used = payload_data["new_used"]
         manufacturer = payload_data["manufacturer"]
-        parts_category = payload_data["parts-category"]
+        parts_category = payload_data["parts_category"]
         images = payload_data["images"]
         shipping = payload_data["shipping"]
         # manufacturer_code = payload_data["manufacturer_code"]
