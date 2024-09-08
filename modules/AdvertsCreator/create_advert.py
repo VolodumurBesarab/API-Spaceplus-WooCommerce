@@ -1,8 +1,11 @@
 import os
 
-from dotenv import load_dotenv
+from modules.OneDrive.photo_downloader import PhotoDownloader
+from modules.Photos.photoResizer import PhotoResizer
+from modules.GenerateLink.generate_links_s3bucket import S3LinkGenerator
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 import requests
 
@@ -29,17 +32,25 @@ PARTS_CATEGORY_DICT = {"Bagażniki dachowe > Bez relingów": [{"id": 51}, {"id":
 
 class CreateAdvert:
     def __init__(self):
-        try:
-            self.CONSUMER_KEY_WC = os.environ["CONSUMER_KEY_WC"]
-            self.CONSUMER_SECRET_WC = os.environ["CONSUMER_SECRET_WC"]
-            self.WC_URL = os.environ["WC_URL"]
-        except:
-            self.CONSUMER_KEY_WC = os.getenv("CONSUMER_KEY_WC_2")
-            self.CONSUMER_SECRET_WC = os.getenv("CONSUMER_SECRET_WC_2")
-            self.WC_URL = os.getenv("WC_URL")
+        self.photo_downloader = PhotoDownloader()
+        self.photo_resizer = PhotoResizer()
+        self.s3_link_generator = S3LinkGenerator()
+        # try:
+        #     self.CONSUMER_KEY_WC = os.getenv("CONSUMER_KEY_WC")
+        #     self.CONSUMER_SECRET_WC = os.getenv("CONSUMER_SECRET_WC")
+        #     self.WC_URL = os.getenv("WC_URL")
+        # except:
+        self.CONSUMER_KEY_WC = os.environ["CONSUMER_KEY_WC"]
+        self.CONSUMER_SECRET_WC = os.environ["CONSUMER_SECRET_WC"]
+        self.WC_URL = os.environ["WC_URL"]
 
+    def create_woocommerce_advert(self, title, price, product_id, description, parts_category, shipping, new_used, manufacturer):
+        photos_folder_path = self.photo_downloader.download_products_photos(product_id=product_id)
+        self.photo_resizer.resize_photo(input_path=photos_folder_path, output_path=photos_folder_path)
 
-    def create_woocommerce_advert(self, title, price, product_id, description, parts_category, images, shipping, new_used, manufacturer):
+        list_urls = self.s3_link_generator.generate_public_urls(path_to_save_photos=photos_folder_path, product_id=product_id)
+        images = self.s3_link_generator.get_formatted_urls(list_urls=list_urls)
+
         # product_id = payload_data["product_id"]
         # title = payload_data["title"]
         # description = payload_data["description"]
@@ -86,17 +97,21 @@ class CreateAdvert:
         }
 
         Woocommerceendpoint = 'products'
-        print(self.WC_URL)
-        url = f'{self.WC_URL}{Woocommerceendpoint}'
-        print(url)
         print(product_data)
+        url = f'{self.WC_URL}{Woocommerceendpoint}'
+
         response = requests.post(
             url=url, auth=(self.CONSUMER_KEY_WC, self.CONSUMER_SECRET_WC),
             json=product_data
         )
+        print(response.status_code)
+        print(response.text)
         print(response.json())
+        # if response.status_code != 500:
+        #     print(response.json())
+        # else:
+        #     print(response.json())
         print("add report here")
-        return response.json()
 
     def get_list_all_products(self):
         Woocommerceendpoint = "products"
