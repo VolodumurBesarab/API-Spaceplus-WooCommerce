@@ -1,8 +1,9 @@
 import os
 
 from modules.OneDrive.photo_downloader import PhotoDownloader
-from modules.Photos.photoResizer import PhotoResizer
+# from modules.Photos.photo_resizer_pil import PhotoResizer
 from modules.GenerateLink.generate_links_s3bucket import S3LinkGenerator
+from modules.Photos.photo_resizer_cv import PhotoResizerCv
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -33,7 +34,8 @@ PARTS_CATEGORY_DICT = {"Bagażniki dachowe > Bez relingów": [{"id": 51}, {"id":
 class CreateAdvert:
     def __init__(self):
         self.photo_downloader = PhotoDownloader()
-        self.photo_resizer = PhotoResizer()
+        # self.photo_resizer = PhotoResizer()
+        self.photo_resizer_cv = PhotoResizerCv()
         self.s3_link_generator = S3LinkGenerator()
         # try:
         #     self.CONSUMER_KEY_WC = os.getenv("CONSUMER_KEY_WC")
@@ -46,8 +48,8 @@ class CreateAdvert:
 
     def create_woocommerce_advert(self, title, price, product_id, description, parts_category, shipping, new_used, manufacturer):
         photos_folder_path = self.photo_downloader.download_products_photos(product_id=product_id)
-        self.photo_resizer.resize_photo(input_path=photos_folder_path, output_path=photos_folder_path)
-
+        # self.photo_resizer.resize_photo(input_path=photos_folder_path, output_path=photos_folder_path)
+        self.photo_resizer_cv.resize_image(photos_folder_path)
         list_urls = self.s3_link_generator.generate_public_urls(path_to_save_photos=photos_folder_path, product_id=product_id)
         images = self.s3_link_generator.get_formatted_urls(list_urls=list_urls)
 

@@ -35,3 +35,15 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
     }
+
+# event = {
+#   "product_id": "25408",
+#   "title": "Uchwyt rowerowy. ",
+#   "description": "|25408| Uchwyt rowerowy. Stan jak na zdjęciach. Uchwyt rowerowy. Stan jak na zdjęciach.",
+#   "price": "50.00",
+#   "new_used": "used",
+#   "manufacturer": "Oryginalny",
+#   "parts_category": "Uchwyty rowerowe, Uchwyty rowerowe > Na dach",
+#   "shipping": "2"
+# }
+# lambda_handler(event=event, context=None)

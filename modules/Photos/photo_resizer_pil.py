@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-class PhotoResizer:
+class PhotoResizerPil:
     def __init__(self, output_format='JPEG', output_size=(800, 600)):
         self.output_format = output_format
         self.output_size = output_size
